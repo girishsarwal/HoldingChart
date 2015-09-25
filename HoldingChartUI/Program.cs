@@ -11,7 +11,6 @@ namespace HoldingChartUI
     static class Program
     {
         public static string RootSHCode;
-        public static double DownScaleFactor;
         
         /// <summary>
         /// The main entry point for the application.
@@ -22,7 +21,7 @@ namespace HoldingChartUI
             try
             {
 
-                DownScaleFactor = 1.0;
+                HoldingChartConfiguration.ScaleDownFactor= 1.0;
                 if (args.Length == 0)
                 {
                     throw new ArgumentException("Atleast the shareholder code must be provided");
@@ -30,20 +29,23 @@ namespace HoldingChartUI
                 else if (args.Length == 1)
                 {
                     RootSHCode = args[0];
-                    Console.WriteLine("No Down Scale Factor provided. Will be defaulted to " + DownScaleFactor);
+                    Console.WriteLine("No Down Scale Factor provided. Will be defaulted to " + HoldingChartConfiguration.ScaleDownFactor);
                 }
                 else if (args.Length == 2)
                 {
                     RootSHCode = args[0];
-                    DownScaleFactor = Convert.ToDouble(args[1]);
+                    HoldingChartConfiguration.ScaleDownFactor = Convert.ToDouble(args[1]);
                 }
 
-                HoldingDataScraper.Instance.BuildHoldings();
+                HoldingDataScraper.Instance.BuildDataset();
                 HoldingProcessor.Holdings = HoldingDataScraper.Instance.Holdings;
 
                 string path = Path.Combine(Environment.CurrentDirectory, "holdingchart.htm.template");
                 string template = File.ReadAllText(path);
-                string data = HoldingProcessor.ProcessHoldings(HoldingDataScraper.Instance.FM1, null);
+
+                ShareHolder rootShareHolder = HoldingDataScraper.Instance.GetShareHolder(RootSHCode);
+
+                string data = HoldingProcessor.ProcessHoldings(rootShareHolder, null);
                 template = template.Replace("{{ data }}", data);
 
                 string outputPath = Path.GetTempPath() + Guid.NewGuid().ToString() + ".htm";
@@ -61,13 +63,17 @@ namespace HoldingChartUI
                 Console.WriteLine("Usage"); 
                 Console.WriteLine("-----");
 
-                Console.WriteLine("HoldingChartUI.exe <shareholder> [downscalefactor=" + DownScaleFactor +"]");
+                Console.WriteLine("HoldingChartUI.exe <shareholder> [downscalefactor=" + HoldingChartConfiguration.ScaleDownFactor +"]");
                 Console.WriteLine("\n");
+                Console.WriteLine("\n\nPress any key to continue...");
+                Console.ReadKey();
             }
             catch (Exception ex)
             {
                 Console.WriteLine("An error occured while processing the request");
                 Console.WriteLine(ex.Message);
+                Console.WriteLine("\n\nPress any key to continue...");
+                Console.ReadKey();
             }
             
 

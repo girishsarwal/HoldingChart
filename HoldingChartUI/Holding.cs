@@ -25,7 +25,11 @@ namespace HoldingChartUI
         {
             get
             {
-               return (EffectiveShareHoldingPercentage / 100.0f) * Comp.TotalCompanyCapital;
+                if (Comp == null)
+                {
+                    throw new Exception("ERROR: Broken Shareholder link.\nMaster data for this shareholder does not exist!\nABORTING further processing!");
+                }
+                return (EffectiveShareHoldingPercentage / 100.0f) * Comp.TotalCompanyCapital;
             }
         }
 
