@@ -1,0 +1,77 @@
+﻿<html>
+  <head>
+    <style>
+      .bluebg
+      {
+      background: #ACD1E9;
+      }
+      .greenbg
+      {
+      background: #D0E799;
+      }
+
+      .shareholdername
+      {
+
+      margin:0px;
+      padding:0px;
+      font-weight: 900;
+      font-size: 12px;
+      color:brown;
+      border-bottom:1px solid #aaa;
+      }
+
+      .shareholdercapital
+      {
+
+      margin:0px;
+      padding:0px;
+      font-weight: 900;
+      font-size: 12px;
+      color:navy;
+      border-bottom:1px solid #aaa;
+      }
+
+      .companycapital
+      {
+
+      margin:0px;
+      padding:0px;
+      font-weight: bold;
+      font-size: 12px;
+      color:#f00;
+      border-bottom:1px solid #aaa;
+      }
+
+      .shareholderpercent
+      {
+      margin:0px;
+      padding:0px;
+      font-weight: bold;
+      font-size: 12px;
+      color:#fff;
+      border-bottom:1px solid #aaa;
+      }
+    </style>
+
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["orgchart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Name');
+      data.addColumn('string', 'Manager');
+      data.addColumn('string', 'ToolTip');
+
+      data.addRows({{ data }});
+
+      var chart = new google.visualization.OrgChart(document.getElementById('chart_div'));
+      chart.draw(data, {allowHtml:true});
+      }
+    </script>
+  </head>
+  <body>
+    <div id="chart_div"></div>
+  </body>
+</html>
