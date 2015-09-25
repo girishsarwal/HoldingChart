@@ -103,7 +103,7 @@ namespace HoldingChartUI
             SqlDataReader reader = null;
             try
             {
-                command = new SqlCommand("SELECT DISTINCT ShCode, ShName, ShCapital, Flag FROM Hierarch_Chart WHERE ShType ='Holding Company' OR ShType = 'Subsidiary'", connection);
+                command = new SqlCommand("SELECT DISTINCT CompanyCode, CompanyName, ShCapital, Flag FROM Hierarch_Chart", connection);
                 reader = command.ExecuteReader();
                 while (reader.Read())
                 {
@@ -112,7 +112,7 @@ namespace HoldingChartUI
                         Code = reader.GetString(0),
                         Name = reader.GetString(1),
                         TotalCompanyCapital = Convert.ToInt64(reader.GetValue(2)),
-                        Recurse = (reader.GetString(3) != null && reader.GetString(3) != "Y")
+                        Recurse = (reader.IsDBNull(3) || reader.GetString(3) != "Y")
                     });
                 }
             }
