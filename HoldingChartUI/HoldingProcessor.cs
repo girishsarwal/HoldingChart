@@ -49,9 +49,12 @@ namespace HoldingChartUI
                     String parentPathCode = item.Parent == null? s.Code: item.Parent.PathCode;
                     sb.Append("[{v:'" + item.PathCode + "', f:'<div class=\"greenbg shareholdername\">" + item.Comp.Name + "</div><div class=\"greenbg companycapital\">" + (item.Comp.TotalCompanyCapital/HoldingChartConfiguration.ScaleDownFactor) + "</div><div class=\"greenbg shareholdercapital\">" + (item.ShareHolderCapital/HoldingChartConfiguration.ScaleDownFactor) + "</div><div class=\"greenbg shareholderpercent\">" + item.EffectiveShareHoldingPercentage + "%</div>'}, '" + parentPathCode + "', '' ],");
                     double childAggregated = 0;
-                    if (item.Comp.Recurse)
+                    if (item.Comp != null)
                     {
-                        childAggregated = RecurseHoldings(item.Comp, item);
+                        if (item.Comp.Recurse)
+                        {
+                            childAggregated = RecurseHoldings(item.Comp, item);
+                        }
                     }
                     shareHoldingsAggregated +=  childAggregated;
                 }
