@@ -64,6 +64,12 @@ namespace HoldingChartUI
                 Console.WriteLine("HoldingChartUI.exe <shareholder> [downscalefactor=" + DownScaleFactor +"]");
                 Console.WriteLine("\n");
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine("An error occured while processing the request");
+                Console.WriteLine(ex.Message);
+            }
+            
 
         }
     }

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,8 +10,8 @@ namespace HoldingChartUI
 {
     public class HoldingDataScraper
     {
-
-
+        private SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["sapdb"].ConnectionString);
+        
         public Company HoldingCompany1;
         public Company HoldingCompany2;
         public Company HoldingCompany3;
@@ -66,17 +68,30 @@ namespace HoldingChartUI
 
         public HoldingDataScraper()
         {
-            Companies = new List<Company>();
-            FamilyMembers = new List<FamilyMember>();
-            Holdings = new List<Holding>();
+            try
+            {
+                connection.Open();
+                Companies = new List<Company>();
+                FamilyMembers = new List<FamilyMember>();
+                Holdings = new List<Holding>();
 
-            BuildCompanies();
-            BuildFamilyMembers();
-            BuildHoldings();
+                BuildCompanies();
+                BuildFamilyMembers();
+                BuildHoldings();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
         }
 
         private void BuildFamilyMembers()
         {
+
         
             FM1 = new FamilyMember() { Name = "Family Member 1", Code = "FM1" };
             FM2 = new FamilyMember() { Name = "Family Member 2", Code = "FM2" };
@@ -87,6 +102,16 @@ namespace HoldingChartUI
 
         private void BuildCompanies()
         {
+            SqlCommand command = new SqlCommand("SELECT DISTINCT * FROM Hierarch_Data WHERE ShType ='Holding Company'");
+            SqlDataReader reader = command.ExecuteReader();
+            while(reader.Read() != null)
+            {
+                Companies.Add(new Company(){
+                    Name=reader.GetString(0)
+                });
+                reader.NextResult();
+            }
+
             HoldingCompany1 = new Company() { Name = "Holding Company 1", TotalCompanyCapital = 100000, Code = "HC0001" };
             HoldingCompany2 = new Company() { Name = "Holding Company 2", TotalCompanyCapital = 5000000, Code = "HC0002"};
             HoldingCompany3 = new Company() { Name = "Holding Company 3", TotalCompanyCapital = 0, Code = "HC0003" };
