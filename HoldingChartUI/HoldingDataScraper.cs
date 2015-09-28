@@ -143,7 +143,7 @@ namespace HoldingChartUI
                 {
                     string companyCode = reader.GetString(0);
                     string shareHolderCode = reader.GetString(1);
-                    double shareHolderPercentage = Convert.ToInt64(reader.GetValue(2));
+                    double shareHolderPercentage = Convert.ToDouble(reader.GetValue(2));
                     Company comp = Companies.Find(c => c.Code == companyCode);
                     ShareHolder sh = GetShareHolder(shareHolderCode);
                     if (comp == null)
