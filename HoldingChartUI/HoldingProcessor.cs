@@ -51,7 +51,7 @@ namespace HoldingChartUI
                     double childAggregated = 0;
                     if (item.Comp != null)
                     {
-                        if (item.Comp.Recurse)
+                        if (HoldingChartConfiguration.ConsiderRecurseFlag && item.Comp.Recurse)
                         {
                             childAggregated = RecurseHoldings(item.Comp, item);
                         }

@@ -13,5 +13,10 @@ namespace HoldingChartUI
             get;
             set;
         }
+        public static Boolean ConsiderRecurseFlag
+        {
+            get;
+            set;
+        }
     }
 }

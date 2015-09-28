@@ -22,19 +22,27 @@ namespace HoldingChartUI
             {
 
                 HoldingChartConfiguration.ScaleDownFactor= 1.0;
-                if (args.Length == 0)
+                HoldingChartConfiguration.ConsiderRecurseFlag = true;
+                if (args.Length <= 0)
                 {
                     throw new ArgumentException("Atleast the shareholder code must be provided");
                 }
-                else if (args.Length == 1)
+                else if (args.Length <= 1)
                 {
                     RootSHCode = args[0];
-                    Console.WriteLine("No Down Scale Factor provided. Will be defaulted to " + HoldingChartConfiguration.ScaleDownFactor);
+                    Console.WriteLine("No ScaleDownFactor provided. Will be defaulted to " + HoldingChartConfiguration.ScaleDownFactor);
                 }
-                else if (args.Length == 2)
+                else if (args.Length <= 2)
+                {
+                    RootSHCode = args[0];
+                    Console.WriteLine("No ConsiderRecurseFlag Provided. Will be defaulted to " + HoldingChartConfiguration.ConsiderRecurseFlag);
+                    HoldingChartConfiguration.ScaleDownFactor = Convert.ToDouble(args[1]);
+                }
+                else
                 {
                     RootSHCode = args[0];
                     HoldingChartConfiguration.ScaleDownFactor = Convert.ToDouble(args[1]);
+                    HoldingChartConfiguration.ConsiderRecurseFlag = args[2] == "1";
                 }
 
                 HoldingDataScraper.Instance.BuildDataset();
