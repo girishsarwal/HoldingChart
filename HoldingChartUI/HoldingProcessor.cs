@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,11 +25,11 @@ namespace HoldingChartUI
             double totalHoldings = RecurseHoldings(s, parent);
             if (s is FamilyMember)
             {
-                sb.Append("[{v:'" + s.Code + "', f:'<div class=\"bluebg shareholdername\">" + s.Name + "</div><div class=\"bluebg shareholdercapital\">" + (totalHoldings / HoldingChartConfiguration.ScaleDownFactor)+ "</div>'}, '', '' ],");
+                sb.Append("[{v:'" + s.Code + "', f:'<div class=\"bluebg shareholdername\">" + s.Name + "</div><div class=\"bluebg shareholdercapital\">" + (totalHoldings / HoldingChartConfiguration.ScaleDownFactor).ToString("#,#", CultureInfo.InvariantCulture)+ "</div>'}, '', '' ],");
             }
             else
             {
-                sb.Append("[{v:'" + s.Code + "', f:'<div class=\"greenbg shareholdername\">" + s.Name + "</div><div class=\"greenbg shareholdercapital\">" + (totalHoldings / HoldingChartConfiguration.ScaleDownFactor) + "</div>'}, '', '' ],");
+                sb.Append("[{v:'" + s.Code + "', f:'<div class=\"greenbg shareholdername\">" + s.Name + "</div><div class=\"greenbg shareholdercapital\">" + (totalHoldings / HoldingChartConfiguration.ScaleDownFactor).ToString("#,#", CultureInfo.InvariantCulture) + "</div>'}, '', '' ],");
             }
             sb.Remove(sb.Length - 1, 1);
             sb.Append("]");
@@ -47,7 +48,7 @@ namespace HoldingChartUI
                     item.Parent = parent;
                     shareHoldingsAggregated += item.ShareHolderCapital;
                     String parentPathCode = item.Parent == null? s.Code: item.Parent.PathCode;
-                    sb.Append("[{v:'" + item.PathCode + "', f:'<div class=\"greenbg shareholdername\">" + item.Comp.Name + "</div><div class=\"greenbg companycapital\">" + (item.Comp.TotalCompanyCapital/HoldingChartConfiguration.ScaleDownFactor) + "</div><div class=\"greenbg shareholdercapital\">" + (item.ShareHolderCapital/HoldingChartConfiguration.ScaleDownFactor) + "</div><div class=\"greenbg shareholderpercent\">" + item.EffectiveShareHoldingPercentage + "%</div>'}, '" + parentPathCode + "', '' ],");
+                    sb.Append("[{v:'" + item.PathCode + "', f:'<div class=\"greenbg shareholdername\">" + item.Comp.Name + "</div><div class=\"greenbg companycapital\">" + (item.Comp.TotalCompanyCapital / HoldingChartConfiguration.ScaleDownFactor).ToString("#,#", CultureInfo.InvariantCulture) + "</div><div class=\"greenbg shareholdercapital\">" + (item.ShareHolderCapital / HoldingChartConfiguration.ScaleDownFactor).ToString("#,#", CultureInfo.InvariantCulture) + "</div><div class=\"greenbg shareholderpercent\">" + item.EffectiveShareHoldingPercentage + "%</div>'}, '" + parentPathCode + "', '' ],");
                     double childAggregated = 0;
                     if (item.Comp != null)
                     {
