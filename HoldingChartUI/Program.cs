@@ -55,8 +55,8 @@ namespace HoldingChartUI
 
                 string data = HoldingProcessor.ProcessHoldings(rootShareHolder, null);
                 template = template.Replace("{{ data }}", data);
-
-                string outputPath = Path.GetTempPath() + String.Format("Report for {0} - Hierarch Chart - {1}", RootSHCode, DateTime.Now.ToString("").Replace(":", "-").Replace("/","-")) + ".htm";
+                string shareHolder = HoldingDataScraper.Instance.GetShareHolder(RootSHCode).Name;
+                string outputPath = Path.GetTempPath() + String.Format("{0} - Hierarchy Report", shareHolder) + ".htm";
                 File.WriteAllText(outputPath, template);
 
                 Process.Start(outputPath);
